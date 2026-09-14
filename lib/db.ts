@@ -3,7 +3,9 @@ import path from "path";
 import fs from "fs";
 import bcrypt from "bcryptjs";
 
-const dataDir = path.join(process.cwd(), "data");
+// DATA_DIR lets deployment platforms (e.g. Railway) point this at a
+// persistent volume; defaults to ./data for local development.
+const dataDir = process.env.DATA_DIR || path.join(process.cwd(), "data");
 if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
 const dbPath = path.join(dataDir, "jansetu.db");

@@ -22,22 +22,16 @@ function getLanIps(): string[] {
 
 const lanIps = getLanIps();
 
-// The ngrok tunnel used to share this demo publicly during presentations.
-// Hostname only (no protocol/port) for allowedDevOrigins; host:port isn't
-// needed here since ngrok terminates TLS on 443, but Next.js only checks
-// the hostname for allowedDevOrigins regardless.
-const ngrokHost = "aphacic-magdalena-magically.ngrok-free.dev";
-
 const nextConfig: NextConfig = {
   // Allows the dev server's HMR/static-chunk requests when the app is
-  // opened from another device (e.g. a phone) via this machine's LAN IP,
-  // or through the ngrok tunnel used to demo this publicly.
-  allowedDevOrigins: [...lanIps, ngrokHost],
+  // opened from another device (e.g. a phone) via this machine's LAN IP.
+  // This block only affects `next dev`; it has no effect in production.
+  allowedDevOrigins: [...lanIps],
   experimental: {
     serverActions: {
       // Allows Server Action form submissions (login, complaints, etc.)
-      // from the same LAN-IP / ngrok origins.
-      allowedOrigins: [...lanIps.map((ip) => `${ip}:3000`), ngrokHost],
+      // from the same LAN-IP origins during local dev.
+      allowedOrigins: [...lanIps.map((ip) => `${ip}:3000`)],
     },
   },
 };
