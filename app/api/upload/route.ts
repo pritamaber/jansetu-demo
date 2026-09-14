@@ -44,7 +44,10 @@ export async function POST(request: Request) {
 
   const fs = await import("fs");
   const path = await import("path");
-  const uploadsDir = path.join(process.cwd(), "public", "uploads");
+  // UPLOADS_DIR lets deployment platforms (e.g. Railway) point this at a
+  // persistent volume; defaults to public/uploads for local development,
+  // where Next.js serves it directly as a static file at /uploads/<name>.
+  const uploadsDir = process.env.UPLOADS_DIR || path.join(process.cwd(), "public", "uploads");
   fs.mkdirSync(uploadsDir, { recursive: true });
 
   const imagePaths: string[] = [];
