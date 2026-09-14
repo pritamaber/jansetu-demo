@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jansetu Demo — Rajarhat / New Town Civic Complaint Platform
+
+A **demo-only** civic complaint platform connecting citizens, local booth agents, and a
+master admin, seeded with fictional data set around Rajarhat–New Town, West Bengal.
+
+> ⚠️ This is a demonstration environment. All names, phone numbers, booth offices, and
+> complaints are fictional and created for demo purposes only.
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
+npm run seed   # creates data/jansetu.db and seeds all demo data
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+`npm run seed` is **non-destructive** — it only inserts the fixed demo booths, agents,
+admin, and the original demo citizens/complaints if they're missing. It never deletes or
+resets anything, so real citizen registrations and any status changes made through the app
+are always safe to keep running it.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Demo Credentials
 
-## Learn More
+| Role | Login | Password / OTP |
+|---|---|---|
+| Citizen | Any 10-digit number (e.g. `9000000000`) | OTP: `123456` |
+| Booth Agent (Rick Sonkar — Rajarhat Chowmatha) | `9000000001` | `agent123` |
+| Booth Agent (Bandana Majumdar — Rajarhat Complex) | `9000000002` | `agent123` |
+| Booth Agent (Ayan Daniyari — Rajarhat Newtown) | `9000000003` | `agent123` |
+| Master Admin | `pritam.aber@gmail.com` | `admin123` |
 
-To learn more about Next.js, take a look at the following resources:
+## Demo Flow
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Login as citizen `9000000000`, OTP `123456`.
+2. View citizen dashboard, click **Report Problem**.
+3. Submit "Street light not working" in Rajarhat Chowmatha — the app detects the existing
+   similar complaint `RJH-2026-001` and lets you **Support This Issue** (supporter count
+   increases).
+4. Logout, login as agent Rick Sonkar (`9000000001` / `agent123`) — only Rajarhat Chowmatha
+   complaints are visible. Attempting to open another booth's complaint shows **Access
+   Denied**.
+5. Update `RJH-2026-001`'s status and add a public update note — visible to the citizen.
+6. Logout, login as Master Admin (`pritam.aber@gmail.com` / `admin123`) — see all
+   complaints, agents, booths, citizens, stats, most-reported issues, and reassign
+   complaints to a different agent.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Stack
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js (App Router) + TypeScript + Tailwind CSS
+- SQLite via `better-sqlite3` (file at `data/jansetu.db`, gitignored)
+- Cookie-based sessions (HMAC-signed, demo-grade — not for production use)
+- Server Actions for all mutations (login, complaint submission, support, status updates,
+  reassignment)
