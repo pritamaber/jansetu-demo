@@ -14,7 +14,7 @@ export default async function HomePage() {
   const t = getDictionary(lang).home;
 
   return (
-    <main className="flex-1 flex flex-col items-center bg-orange-50">
+    <main className="flex-1 flex flex-col items-center bg-orange-100">
       {/* Tricolor banner — party symbol + the MLA this demo is built for. No other
           individuals' photos are used here (see project notes on that boundary). */}
       <div className="w-full bg-gradient-to-r from-orange-600 via-orange-100 to-green-600 relative overflow-hidden">
@@ -23,13 +23,13 @@ export default async function HomePage() {
           <img
             src="/bjplogo.jpg"
             alt="Party symbol"
-            className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md shrink-0"
+            className="w-20 h-20 rounded-full object-cover border-2 border-white shadow-md shrink-0"
           />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/mlaimage.png"
             alt="Piyush Kanodia"
-            className="w-20 h-20 rounded-full object-cover object-top border-2 border-white shadow-md shrink-0"
+            className="w-28 h-28 rounded-full object-cover object-top border-2 border-white shadow-md shrink-0"
           />
           <div className="min-w-0 text-left">
             <div className="text-[10px] font-semibold text-slate-700 uppercase tracking-wide leading-none">
