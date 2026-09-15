@@ -30,7 +30,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       lang={lang}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-slate-50 text-slate-900">
+      <body className="min-h-full flex flex-col bg-orange-100 text-slate-900">
         <LanguageProvider initialLang={lang}>
           <div className="w-full bg-amber-100 text-amber-800 text-xs sm:text-sm font-medium py-2 px-3 border-b border-amber-200 flex items-center justify-center gap-3 flex-wrap">
             <span className="text-center">🧪 {t.demoBanner}</span>

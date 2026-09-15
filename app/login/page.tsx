@@ -72,7 +72,7 @@ export default function CitizenLoginPage() {
   }
 
   return (
-    <main className="flex-1 flex items-center justify-center px-4 py-12 bg-gradient-to-b from-orange-50 via-slate-50 to-slate-50">
+    <main className="flex-1 flex items-center justify-center px-4 py-12 bg-orange-100">
       <div className="max-w-md w-full">
         <Link href="/" className="text-sm text-orange-600 hover:underline">
           {t.back}
