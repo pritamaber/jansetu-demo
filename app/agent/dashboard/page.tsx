@@ -16,7 +16,7 @@ export default async function AgentDashboard({
   const session = await getSession();
   if (!session || session.role !== "agent") redirect("/agent/login");
 
-  const booth = db.prepare("SELECT * FROM booths WHERE id = ?").get(session.boothId) as
+  const booth = db.prepare("SELECT * FROM booths WHERE id = ?").get(session.boothId!) as
     | { name: string; area: string }
     | undefined;
 

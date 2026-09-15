@@ -1,4 +1,4 @@
-import Database from "better-sqlite3";
+import { DatabaseSync } from "node:sqlite";
 import path from "path";
 import fs from "fs";
 import bcrypt from "bcryptjs";
@@ -11,9 +11,28 @@ if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 const dbPath = path.join(dataDir, "jansetu.db");
 const isNew = !fs.existsSync(dbPath);
 
-const db = new Database(dbPath);
-db.pragma("journal_mode = WAL");
-db.pragma("foreign_keys = ON");
+const raw = new DatabaseSync(dbPath);
+raw.exec("PRAGMA journal_mode = WAL");
+raw.exec("PRAGMA foreign_keys = ON");
+
+// node:sqlite has no built-in .transaction() helper like better-sqlite3 did,
+// so this shim reproduces the "db.transaction(fn)() " call pattern used
+// throughout the codebase with a plain BEGIN/COMMIT/ROLLBACK wrapper.
+function transaction<T>(fn: () => T): () => T {
+  return () => {
+    raw.exec("BEGIN");
+    try {
+      const result = fn();
+      raw.exec("COMMIT");
+      return result;
+    } catch (err) {
+      raw.exec("ROLLBACK");
+      throw err;
+    }
+  };
+}
+
+const db = Object.assign(raw, { transaction });
 
 db.exec(`
 CREATE TABLE IF NOT EXISTS booths (
