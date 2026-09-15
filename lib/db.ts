@@ -12,6 +12,11 @@ const dbPath = path.join(dataDir, "jansetu.db");
 const isNew = !fs.existsSync(dbPath);
 
 const raw = new DatabaseSync(dbPath);
+// Next.js's build-time page-data collection opens this module from many
+// worker processes at once; without a busy_timeout, concurrent first-time
+// WAL conversion on the same file fails immediately with SQLITE_BUSY
+// ("database is locked") instead of waiting for the lock to clear.
+raw.exec("PRAGMA busy_timeout = 5000");
 raw.exec("PRAGMA journal_mode = WAL");
 raw.exec("PRAGMA foreign_keys = ON");
 
@@ -132,7 +137,14 @@ CREATE INDEX IF NOT EXISTS idx_appointments_office_date ON appointments(office_i
 // evidence was required on new complaints.
 const complaintColumns = db.prepare("PRAGMA table_info(complaints)").all() as { name: string }[];
 if (!complaintColumns.some((c) => c.name === "image_path")) {
-  db.exec("ALTER TABLE complaints ADD COLUMN image_path TEXT");
+  // Next.js's build-time page-data collection loads this module from many
+  // worker processes concurrently, so two workers can both see the column
+  // missing and race to add it; ignore the loser's "already exists" error.
+  try {
+    db.exec("ALTER TABLE complaints ADD COLUMN image_path TEXT");
+  } catch (err) {
+    if (!(err instanceof Error) || !err.message.includes("duplicate column name")) throw err;
+  }
 }
 
 // Migration: carry forward any single image_path (from before multi-image
