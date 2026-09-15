@@ -14,22 +14,22 @@ export default async function HomePage() {
   const t = getDictionary(lang).home;
 
   return (
-    <main className="flex-1 flex flex-col items-center bg-slate-50">
+    <main className="flex-1 flex flex-col items-center bg-orange-50">
       {/* Tricolor banner — party symbol + the MLA this demo is built for. No other
           individuals' photos are used here (see project notes on that boundary). */}
-      <div className="w-full bg-gradient-to-r from-orange-500 via-white to-green-600 relative overflow-hidden">
-        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-3">
+      <div className="w-full bg-gradient-to-r from-orange-600 via-orange-100 to-green-600 relative overflow-hidden">
+        <div className="max-w-3xl mx-auto px-4 py-4 flex items-center gap-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/bjplogo.jpg"
             alt="Party symbol"
-            className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-md shrink-0"
+            className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md shrink-0"
           />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/mlaimage.png"
             alt="Piyush Kanodia"
-            className="w-12 h-12 rounded-full object-cover object-top border-2 border-white shadow-md shrink-0"
+            className="w-20 h-20 rounded-full object-cover object-top border-2 border-white shadow-md shrink-0"
           />
           <div className="min-w-0 text-left">
             <div className="text-[10px] font-semibold text-slate-700 uppercase tracking-wide leading-none">
@@ -41,7 +41,7 @@ export default async function HomePage() {
             <div className="text-xs text-slate-700">{t.mlaTitle}</div>
           </div>
         </div>
-        <div className="bg-slate-900/85 text-white text-center py-1.5 px-4">
+        <div className="bg-orange-700 text-white text-center py-1.5 px-4">
           <div className="text-xs sm:text-sm font-semibold">{t.tagline1}</div>
         </div>
       </div>
